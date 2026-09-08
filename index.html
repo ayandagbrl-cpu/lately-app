@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ffffff" />
+    <title>Lately — life, shared with your people.</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell" aria-live="polite">
+      <section class="onboarding" id="onboarding" aria-label="Welcome to Lately">
+        <div class="onboarding-step active" data-step="0">
+          <p class="eyebrow">lately</p>
+          <h1>Life, shared with your people.</h1>
+          <p>Keep up with the moments that matter—without turning life into a performance.</p>
+          <button class="primary-button" data-next="1">Get started</button>
+          <button class="text-button" id="go-to-signin">Already have an account? Sign in</button>
+        </div>
+        <div class="onboarding-step" data-step="signin">
+          <p class="eyebrow">Welcome back</p>
+          <h1>Sign in.</h1>
+          <label><span>Email</span><input id="signin-email" type="email" placeholder="you@example.com" /></label>
+          <label><span>Password</span><input id="signin-password" type="password" /></label>
+          <p class="field-error hidden" id="signin-error"></p>
+          <button class="primary-button" id="submit-signin">Sign in</button>
+          <button class="text-button" id="back-to-welcome">Back</button>
+        </div>
+        <div class="onboarding-step" data-step="1">
+          <p class="eyebrow">About you</p>
+          <h1>Make it yours.</h1>
+          <label><span>Email</span><input id="signup-email" type="email" placeholder="you@example.com" /></label>
+          <label><span>Password</span><input id="signup-password" type="password" placeholder="At least 6 characters" /></label>
+          <label><span>Your name</span><input id="onboarding-name" placeholder="Your name" /></label>
+          <p class="field-error hidden" id="name-required-hint">Please enter your name to continue.</p>
+          <label><span>A little about you <em>optional</em></span><textarea id="onboarding-bio" rows="3" placeholder="What are you collecting lately?"></textarea></label>
+          <p class="field-error hidden" id="signup-error"></p>
+          <button class="primary-button" id="onboarding-step1-continue">Continue</button>
+        </div>
+        <div class="onboarding-step" data-step="confirm-email">
+          <p class="eyebrow">Almost there</p>
+          <h1>Check your email.</h1>
+          <p>We sent a confirmation link to finish creating your account. Once you've confirmed it, come back and sign in.</p>
+          <button class="primary-button" id="confirm-email-to-signin">Go to sign in</button>
+        </div>
+        <div class="onboarding-step" data-step="2">
+          <p class="eyebrow">Your people</p>
+          <h1>Start with your people.</h1>
+          <p>We’ll never add anyone for you. Choose how you’d like to find them.</p>
+          <div class="setup-choices"><button class="setup-choice" data-choice="contacts"><i data-lucide="contact-round"></i><div><strong>Find contacts on Lately</strong><small>Only people already using Lately appear.</small></div><i class="chevron" data-lucide="chevron-right"></i></button><button class="setup-choice" data-choice="invite"><i data-lucide="send"></i><div><strong>Invite someone</strong><small>Send a private link by text or WhatsApp.</small></div><i class="chevron" data-lucide="chevron-right"></i></button><button class="setup-choice" data-choice="search"><i data-lucide="search"></i><div><strong>Search by name or username</strong><small>Useful when you know exactly who to add.</small></div><i class="chevron" data-lucide="chevron-right"></i></button></div>
+          <button class="primary-button" data-next="3">Continue</button><button class="text-button" data-next="3">Skip for now</button>
+        </div>
+        <div class="onboarding-step" data-step="3">
+          <p class="eyebrow">You’re all set</p>
+          <h1>Welcome to Lately.</h1>
+          <p>Your life is already worth keeping up with.</p>
+          <button class="primary-button" id="finish-onboarding">See what’s new</button>
+        </div>
+      </section>
+      <section class="phone" aria-label="Lately app">
+        <header class="topbar">
+          <h1>lately</h1>
+          <div class="topbar-actions">
+            <button class="icon-button" id="activity-button" aria-label="Activity"><i data-lucide="bell"></i><span class="badge hidden" id="activity-badge"></span></button>
+            <button class="icon-button" id="new-memory" aria-label="Add a memory"><i data-lucide="plus"></i></button>
+          </div>
+        </header>
+
+        <section class="screen active" id="home-screen" aria-label="Home">
+          <button class="prompt" id="prompt-memory">What’s new lately?<span>Add</span></button>
+          <div class="feed" id="feed"></div>
+        </section>
+
+        <section class="screen" id="people-screen" aria-label="People">
+          <div class="page-heading"><h2>Your people</h2><p>The people whose lives you want to keep up with.</p></div>
+          <button class="prompt" id="prompt-add-person">Add someone new<span>Add</span></button>
+          <div class="people-list" id="people-list"></div>
+        </section>
+
+        <section class="screen" id="life-screen" aria-label="My life">
+          <div class="profile"><button class="icon-button settings-button" id="settings-button" aria-label="Settings"><i data-lucide="settings"></i></button><button class="large-avatar" id="avatar-button" type="button" aria-label="Change profile photo"><span id="avatar-initials">Y</span><span class="avatar-edit"><i data-lucide="camera"></i></span></button><input type="file" id="avatar-input" accept="image/*" hidden /><h2>You</h2><p class="placeholder">No bio yet</p></div>
+          <div class="story-heading"><h3>My story</h3><span>Newest first</span></div>
+          <div id="timeline"></div>
+        </section>
+
+        <nav class="tabbar" aria-label="Main navigation">
+          <button class="tab active" data-screen="home-screen" aria-label="Home"><i data-lucide="house"></i>Home</button>
+          <button class="tab" data-screen="people-screen" aria-label="People"><i data-lucide="users-round"></i>People</button>
+          <button class="tab" data-screen="life-screen" aria-label="My life"><i data-lucide="clock-3"></i>My life</button>
+        </nav>
+        <div class="tapback-backdrop hidden" id="tapback-backdrop"></div>
+        <div class="tapback-picker hidden" id="tapback-picker">
+          <button type="button" data-emoji="❤️">❤️</button>
+          <button type="button" data-emoji="😂">😂</button>
+          <button type="button" data-emoji="😮">😮</button>
+          <button type="button" data-emoji="🥲">🥲</button>
+          <button type="button" data-emoji="🙏">🙏</button>
+          <button type="button" data-emoji="👏">👏</button>
+        </div>
+      </section>
+    </main>
+
+    <dialog id="composer" class="sheet">
+      <form method="dialog" class="sheet-content" id="memory-form">
+        <header class="sheet-header"><button type="button" id="cancel-composer">Cancel</button><h2 id="composer-title">New memory</h2><button class="share" id="composer-share" type="submit">Share</button></header>
+        <label class="title-input"><span>What happened?</span><input id="memory-title" required placeholder="Give this moment a name" /></label>
+        <label class="note-input"><textarea id="memory-note" rows="4" placeholder="Write a little something…"></textarea></label>
+        <div class="media-actions"><button type="button" id="attach-photo"><i data-lucide="image"></i><span>Photo</span></button><button type="button" id="attach-video"><i data-lucide="video"></i><span>Video</span></button><button type="button" id="attach-voice"><i data-lucide="mic"></i><span>Voice note</span></button></div>
+        <input type="file" id="photo-input" accept="image/*" hidden />
+        <input type="file" id="video-input" accept="video/*" hidden />
+        <input type="file" id="audio-input" accept="audio/*" hidden />
+        <div class="attachment-preview hidden" id="attachment-preview"></div>
+        <button class="setting-row" type="button" id="date-button"><i data-lucide="calendar-days"></i><span id="memory-date">Today</span><i class="chevron" data-lucide="chevron-right"></i></button>
+        <button class="setting-row" id="audience-button" type="button"><i data-lucide="users-round"></i><span id="audience-label">Close friends</span><i class="chevron" data-lucide="chevron-right"></i></button>
+        <p class="hint">You can change who sees each memory.</p>
+      </form>
+    </dialog>
+
+    <dialog id="media-choice-sheet" class="action-sheet">
+      <div class="action-sheet-content">
+        <button type="button" id="media-choice-primary"></button>
+        <button type="button" id="media-choice-secondary"></button>
+        <button type="button" class="action-sheet-cancel" id="media-choice-cancel">Cancel</button>
+      </div>
+    </dialog>
+
+    <dialog id="date-picker" class="sheet date-sheet">
+      <section class="sheet-content">
+        <header class="sheet-header"><button type="button" id="close-date-picker">Cancel</button><h2>Date</h2><span></span></header>
+        <div class="calendar">
+          <div class="calendar-nav"><button type="button" id="cal-prev" aria-label="Previous month"><i data-lucide="chevron-left"></i></button><span id="cal-month-label"></span><button type="button" id="cal-next" aria-label="Next month"><i data-lucide="chevron-right"></i></button></div>
+          <div class="calendar-weekdays"><span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
+          <div class="calendar-grid" id="calendar-grid"></div>
+        </div>
+      </section>
+    </dialog>
+
+    <dialog id="replies" class="sheet reply-sheet">
+      <section class="sheet-content reply-content">
+        <header class="sheet-header"><button id="close-replies">Back</button><h2 id="reply-title">Reply</h2><span></span></header>
+        <div class="reply-context" id="reply-context"></div>
+        <div class="messages" id="messages"></div>
+        <form class="reply-composer" id="reply-form"><input id="reply-input" placeholder="Write a reply…" aria-label="Write a private reply" /><button aria-label="Send reply">↑</button></form>
+      </section>
+    </dialog>
+
+    <dialog id="audience-picker" class="sheet audience-sheet">
+      <section class="sheet-content">
+        <header class="sheet-header"><button type="button" id="close-audience">Cancel</button><h2>Share with</h2><span></span></header>
+        <div id="audience-list"></div>
+        <button type="button" class="new-circle-button" id="new-circle-button"><i data-lucide="plus"></i><span>Create a new circle</span></button>
+      </section>
+    </dialog>
+
+    <dialog id="new-circle-sheet" class="sheet new-circle-sheet">
+      <section class="sheet-content">
+        <header class="sheet-header"><button type="button" id="cancel-new-circle">Cancel</button><h2>New circle</h2><button type="button" id="save-new-circle">Save</button></header>
+        <label class="title-input"><span>Circle name</span><input id="new-circle-name" placeholder="e.g. University Friends" /></label>
+      </section>
+    </dialog>
+
+    <dialog id="memory-detail" class="sheet detail-sheet">
+      <section class="sheet-content">
+        <header class="sheet-header"><button type="button" id="close-detail">Close</button><h2>Memory</h2><button type="button" id="edit-memory" aria-label="Edit memory"><i data-lucide="pencil"></i></button></header>
+        <div id="detail-body"></div>
+        <button type="button" class="detail-delete" id="detail-delete">Delete memory</button>
+      </section>
+    </dialog>
+
+    <dialog id="delete-confirm-sheet" class="action-sheet">
+      <div class="action-sheet-content">
+        <button type="button" class="destructive" id="confirm-delete">Delete Memory</button>
+        <button type="button" id="cancel-delete-sheet">Cancel</button>
+      </div>
+    </dialog>
+
+    <dialog id="settings-sheet" class="sheet">
+      <section class="sheet-content">
+        <header class="sheet-header"><span></span><h2>Settings</h2><button type="button" id="close-settings">Done</button></header>
+        <div class="settings-body">
+          <div class="settings-section">
+            <h4>Profile</h4>
+            <button class="setting-row" type="button" id="settings-edit-profile"><i data-lucide="user"></i><span>Edit name &amp; bio</span><i class="chevron" data-lucide="chevron-right"></i></button>
+            <button class="setting-row" type="button" id="settings-change-photo"><i data-lucide="camera"></i><span>Change photo</span><i class="chevron" data-lucide="chevron-right"></i></button>
+          </div>
+          <div class="settings-section">
+            <h4>Circles</h4>
+            <div id="settings-circles-list"></div>
+          </div>
+          <div class="settings-section">
+            <h4>Notifications</h4>
+            <div class="setting-row toggle-row"><i data-lucide="heart"></i><span>Reactions</span><label class="switch"><input type="checkbox" id="notif-reactions" checked><span class="switch-track"></span></label></div>
+            <div class="setting-row toggle-row"><i data-lucide="message-circle"></i><span>Replies</span><label class="switch"><input type="checkbox" id="notif-replies" checked><span class="switch-track"></span></label></div>
+            <div class="setting-row toggle-row"><i data-lucide="user-round-plus"></i><span>New requests</span><label class="switch"><input type="checkbox" id="notif-requests" checked><span class="switch-track"></span></label></div>
+          </div>
+          <div class="settings-section">
+            <h4>Privacy</h4>
+            <button class="setting-row" type="button" id="settings-who-can-request"><i data-lucide="shield"></i><span>Who can send requests</span><span class="setting-value" id="request-privacy-value">Anyone</span><i class="chevron" data-lucide="chevron-right"></i></button>
+          </div>
+          <div class="settings-section">
+            <h4>Account</h4>
+            <button class="setting-row danger-row" type="button" id="settings-sign-out"><i data-lucide="log-out"></i><span>Sign out</span></button>
+            <button class="setting-row danger-row" type="button" id="settings-delete-account"><i data-lucide="trash-2"></i><span>Delete account</span></button>
+          </div>
+        </div>
+      </section>
+    </dialog>
+
+    <dialog id="circle-members-sheet" class="sheet">
+      <section class="sheet-content">
+        <header class="sheet-header"><button type="button" id="close-circle-members">Back</button><h2 id="circle-members-title">Circle</h2><span></span></header>
+        <div id="circle-members-list"></div>
+        <button type="button" class="detail-delete" id="delete-circle-button">Delete circle</button>
+      </section>
+    </dialog>
+
+    <dialog id="edit-profile-sheet" class="sheet">
+      <section class="sheet-content">
+        <header class="sheet-header"><button type="button" id="cancel-edit-profile">Cancel</button><h2>Edit profile</h2><button type="button" id="save-edit-profile">Save</button></header>
+        <label class="title-input"><span>Name</span><input id="edit-profile-name" /></label>
+        <p class="field-error hidden" id="edit-profile-name-hint">Please enter your name.</p>
+        <label class="note-input"><textarea id="edit-profile-bio" rows="3" placeholder="A little about you"></textarea></label>
+      </section>
+    </dialog>
+
+    <dialog id="request-privacy-sheet" class="action-sheet">
+      <div class="action-sheet-content">
+        <button type="button" data-privacy="Anyone">Anyone</button>
+        <button type="button" data-privacy="No one (invite only)">No one (invite only)</button>
+        <button type="button" class="action-sheet-cancel" id="cancel-request-privacy">Cancel</button>
+      </div>
+    </dialog>
+
+    <dialog id="delete-account-confirm" class="action-sheet">
+      <div class="action-sheet-content">
+        <button type="button" class="destructive" id="confirm-delete-account">Delete Account</button>
+        <button type="button" id="cancel-delete-account">Cancel</button>
+      </div>
+    </dialog>
+
+    <dialog id="activity-sheet" class="sheet">
+      <section class="sheet-content">
+        <header class="sheet-header"><span></span><h2>Activity</h2><button type="button" id="close-activity">Done</button></header>
+        <div id="activity-list"></div>
+      </section>
+    </dialog>
+
+    <dialog id="add-people" class="sheet">
+      <section class="sheet-content">
+        <header class="sheet-header"><button id="close-add-people">Cancel</button><h2>Add people</h2><span></span></header>
+        <div class="people-step active" data-people-step="choices">
+          <div class="setup-choices"><button class="setup-choice" data-choice="contacts"><i data-lucide="contact-round"></i><div><strong>Find contacts on Lately</strong><small>Only people already using Lately appear.</small></div><i class="chevron" data-lucide="chevron-right"></i></button><button class="setup-choice" data-choice="invite"><i data-lucide="send"></i><div><strong>Invite someone</strong><small>Send a private link by text or WhatsApp.</small></div><i class="chevron" data-lucide="chevron-right"></i></button><button class="setup-choice" data-choice="search"><i data-lucide="search"></i><div><strong>Search by name or username</strong><small>Useful when you know exactly who to add.</small></div><i class="chevron" data-lucide="chevron-right"></i></button></div>
+        </div>
+        <div class="people-step" data-people-step="search">
+          <label class="title-input"><span>Search by name or username</span><input id="search-input" placeholder="e.g. Tobi or @tobiokafor" /></label>
+          <div id="search-results"></div>
+          <button class="text-button people-back" type="button">Back</button>
+        </div>
+        <div class="people-step" data-people-step="invite">
+          <label class="title-input"><span>Invite by name <em>optional</em></span><input id="invite-name" placeholder="Who are you inviting?" /></label>
+          <div class="invite-link-row"><span id="invite-link">lately.app/invite/8LQK3M</span><button type="button" id="copy-invite">Copy</button></div>
+          <button class="people-action" id="send-invite">Send invite</button>
+          <button class="text-button people-back" type="button">Back</button>
+        </div>
+        <div class="people-step" data-people-step="contacts">
+          <p class="permission-copy">Lately checks which of your contacts already use the app. Your contacts are never shared or stored.</p>
+          <button class="people-action" id="allow-contacts">Allow access</button>
+          <button class="text-button people-back" type="button">Not now</button>
+          <div class="contacts-result hidden" id="contacts-result"><p>No contacts matched yet.</p><button class="text-button" id="contacts-to-invite" type="button">Invite them instead</button></div>
+        </div>
+      </section>
+    </dialog>
+    <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
